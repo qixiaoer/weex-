@@ -1,0 +1,240 @@
+<template>
+
+  <wxc-navpage data-role="none" background-color="#ffffff" height="128" title="我的订单" title-color="#051b28" left-item-src="{{leftimg}}">
+
+  <list class="list page-scroll">
+    <cell class="cell" append="tree" repeat={{orderList}} >
+      <div class="shopDiv">
+        <!--产品名称-->
+         <div class="shopHeader">
+                <image src="{{tipbg}}" class="tit-img" ></image>
+                <text class="tittop">{{order_title}}</text>
+         </div>
+        <!--产品详情-->
+        <div class="shopBody" style="flex-direction:column;">
+	         <div class="info">
+	            <div class="shopstart">
+	           		<text class="txt">交易平台:  {{mch_name}}</text>
+	            	<image src="{{telimg}}" class="img-f"  onclick="telphone" tels="{{mch_phone}}" ></image>
+	            </div>
+	            <text class="txt">商户单号:  {{mch_order_number}} </text>
+	            <text class="txt">交易时间:  {{mch_order_time}}</text>
+	            <text class="txt">交易数量:  {{product_num}}</text>
+	            <div class="shopFooter">
+         			  <text class="shopLikeText">共计:</text>
+  		          <text class="shopCommentText">¥</text>
+  		          <text class="shopLookText">{{mch_order_amount}}元</text>
+			        </div>
+	         </div>
+        </div>
+      </div>
+     </cell>
+   </list>
+   <div class="logoContainer" if="no_order">
+          <image class="logo" src="{{noddimg}}"></image>
+          <text class="desc">您还没有相关订单</text>
+          <text class="desct">去下一单试试吧</text>
+   </div>
+    <div style="height:97;" if="isapp"></div>
+    <!-- <container if="isweb" class="webtab">
+        <div class="webflex">
+            <a href="/wl_weex/build/index.html?page=select.js"><image class="muddtab" src="/wl_weex/images/tab-1.png"></image></a>
+            <a href="/wl_weex/build/index.html?page=select.js"><text class="muddtext">目的地</text></a>
+        </div>
+        <div class="webflex">
+            <a href="{{isandriod}}"><image class="muddtab" src="/wl_weex/images/tab-2.png"></image></a>
+            <a href="{{isandriod}}"><text class="muddtext">WIFI</text></a>
+        </div>
+        <div class="webflex">
+            <a href="/wl_weex/build/index.html?page=myorderlist.js"><image class="muddtab" src="/wl_weex/images/tab-3on.png"></image></a>
+            <a href="/wl_weex/build/index.html?page=myorderlist.js"><text class="muddtext muddcur">我的订单</text></a>
+        </div>
+    </container> -->
+  </wxc-navpage>
+</template>
+<style>
+ .page-scroll{position: absolute; top:0;left: 0; right: 0;bottom:0;font-family: "微软雅黑", "Microsoft yahei"; }
+	.list-wrap{ background:#f2f2f2;overflow:hidden;}
+	.txt {font-size:24;width:100%;height:45;line-height:45;color: #999999;}
+	.img-f{width:25;height:25;margin-top:8;margin-left:84;}
+	.info{padding-top:30;padding-bottom:30;}
+	.redtit{color:red;font-size:30;}
+	.shopCommentText{font-size:18;color:#fe4c4c;margin-top:10;}
+	.shopLookText{font-size:30;color:#fe4c4c;margin-right:3;}
+	.v-list{height:auto;}
+	.shopFooter {flex-direction: row; width: 610;flex-direction:row;margin-top:10;margin-left:10;justify-content:flex-end;}
+	.shopstart{flex-direction: row; width: 610;flex-direction:row;margin-top:10;justify-content:flex-start;}
+  .shopHeader{flex-direction: row; width: 610;margin-top:10;justify-content:flex-start;border-style:solid;border-bottom-width:1;border-bottom-color:#dddddd;background:#fff;font-size:32;color:#333;  font-weight:bold;}
+	.shopLikeText{color:#999;font-size:18;margin-right:8;margin-top:10;}
+	.tetright{text-align:right;font-size:18;color:#999;min-width:100;}
+	.spanred{color:#fe4c4c;font-size:30;}
+	.list{flex-direction: column; overflow: hidden;width: 750;overflow:hidden;background-color: #f2f2f2;}
+	.shopDiv {flex-direction: column;width: 700;margin-left:25;margin-right:25;margin-bottom:30;margin-top:10;border-style:solid;border-width:1;border-color:#ddd;background:#fff;border-bottom-left-radius:10;border-bottom-right-radius:10;border-top-left-radius:10;border-top-right-radius:10;background-color: #ffffff;padding-left:42;padding-right:42;}
+	.tittop{ font-size:32;color:#333;font-weight:bold;padding-top:20;padding-bottom:24;}
+  .tit-img{width:20;height:23;margin-top:30;margin-right:34;}
+  .webtab{background-color:#ffffff; opacity:0.95;width:750;height:97;border-top:1px solid #dddddd; position:fixed;bottom:0;left:0;flex-direction:row;}
+.muddtab{width:48;height:47; margin-left: 100; margin-top: 14;}
+.webflex{flex: 1;}
+.muddtext{text-align: center; font-size: 20;color:#cdcdd4;font-family: "微软雅黑", "Microsoft yahei"; height:36;line-height: 36; }
+.muddcur{color:#ff4a46;}
+.logoContainer {width: 750;height: 300;padding-top:30;padding-bottom:30;align-items: center;justify-content: center;margin-top:100;}
+    .logo{width:133;height:133;}
+  .desc {margin-top: 20;font-size: 32;color: #333;}
+  .desct{margin-top: 20;font-size: 28;color: #999;}
+</style>
+<script>
+require('weex-components');
+var stream = require('@weex-module/stream')
+   module.exports = {
+    data: {
+      hostU:'',
+      wifiU:'',
+      leftimg:'',
+      tipbg:'',
+      telimg:'',
+      noddimg:'',
+      orderList: [],
+      token:'',
+      channel_uid:'',
+      istel:true,
+      isapp:true,
+      no_order:false,
+      isandriod:'/wl_weex/build/index.html?page=wifi.js'
+     },
+     ready:function () {
+            var vm = this;
+            vm.hostU = 'http://dev.ms.vipwifi.com';
+            vm.wifiU = 'http://dev.vipwifi.com';
+            // stream.fetch({
+            //     url: 'http://dev.ms.vipwifi.com/wl_weex/build/host.json',
+            //     type: 'json',
+            //     method: 'GET'
+            // }, function (res) {
+            //     if(typeof res == 'string'){
+            //         res = JSON.parse(res);
+            //     }
+            //     var res_data = res.data; 
+            //     if(typeof res_data == 'string'){
+            //         res_data = JSON.parse(res_data);
+            //     }
+            //     vm.hostU = res_data.hosturl;
+            //     vm.wifiU = res_data.wifiurl;
+                vm.leftimg = vm.hostU+'/wl_weex/images/left-rowbg.png';
+                vm.tipbg = vm.hostU+'/wl_weex/images/tip-bg.png';
+                vm.telimg = vm.hostU+'/wl_weex/images/telphone.png';
+                vm.noddimg = vm.hostU+'/wl_weex/images/wu-dingd-bg.png';
+                vm.$getConfig(function (config) {
+                    var env = config.env;
+                    vm.wifiheight = env.deviceHeight;
+                    vm.platform = env.platform.toLowerCase();
+                    if (vm.platform == 'ios'){
+                        var scale = env.scale;
+                        var deviceWidth = env.deviceWidth / scale;
+                        vm.navBarHeight = 64.0 * 750.0 / deviceWidth;
+                    }
+                }.bind(this));
+                if(vm.platform == 'web'){
+                  vm.isapp = false;
+                    stream.fetch({
+                        url: vm.hostU+'/MshopApi/User/get_online_userid',
+                        type: 'json',
+                        method: 'GET'
+                    }, function (res) {
+                        if (res.data.msg=='success'){
+                            vm.channel_uid = res.data.data.uid;
+                            vm.token = res.data.data.access_token;
+                        }else{
+                            vm.channel_uid = '';
+                        }
+                    },function(response){
+                        vm.channel_uid = '';
+                    })
+                    var ua = navigator.userAgent.toLowerCase(); 
+                    // if ((/android/).test(ua)) {
+                    //     vm.isandriod = vm.wifiU+'/package/index?channel_client=weixin&channel=uroaming&channel_uid='+vm.channel_uid
+                    // }
+                    stream.fetch({
+                        url: vm.hostU+'/MshopApi/Adsorder/order_list',
+                        type:'json',
+                        headers:{"ACCESS-TOKEN":vm.token},
+                        method: 'GET'
+                        }, function (res) {
+                       if(typeof res == 'string'){
+                        res = JSON.parse(res);
+                       }
+                       var res_data = res.data;
+                       if(typeof res_data === 'string'){
+                         res_data = JSON.parse(res_data);
+                       }
+                       if (res_data.msg=='success'){
+                         vm.orderList = res_data.data;
+                       }
+                       if (res_data.data=='') {
+                        vm.no_order=true;
+                       }
+
+                    },function(response){
+
+                  })
+                }
+                else{
+                    var eventModule = require('@weex-module/event');
+                    var loginModule = require('@weex-module/login');
+                    eventModule.openURL('url',function(ret) {
+                        if (ret.userid!=''){
+                            vm.channel_uid = ret.userid;
+                            vm.token = ret.token;
+                            stream.fetch({
+                                url: vm.hostU+'/MshopApi/Adsorder/order_list',
+                                type:'json',
+                                headers:{"ACCESS-TOKEN":vm.token},
+                                method: 'GET'
+                                }, function (res) {
+                               if(typeof res == 'string'){
+                                res = JSON.parse(res);
+                               }
+                               var res_data = res.data;
+                               if(typeof res_data === 'string'){
+                                 res_data = JSON.parse(res_data);
+                               }
+                               if (res_data.msg=='success'){
+                                 vm.orderList = res_data.data;
+                                // vm.tel=res_data.data.mch_phone;
+
+                               }
+                               if (res_data.data=='') {
+                                vm.no_order=true;
+                               }
+
+                            },function(response){
+
+                          })
+                        }else{
+                            loginModule.openURL('http://login.js',false);
+                        }
+                    })
+                }
+            // },function(response){
+                
+            // })
+            
+            this.$on('naviBar.leftItem.click',function(e){
+                this.pop()
+            });
+        },
+        methods: {
+            pop: function() {
+                    var vm = this;
+                    var params = {
+                      'animated' : 'true',
+                    }
+                    vm.$call('navigator','pop',params, function () {});
+              },
+              telphone:function(e){
+                var eventModule = require('@weex-module/event');
+                eventModule.sendTelphone(e.target.attr.tels);
+              }
+        }
+    }
+   
+</script>

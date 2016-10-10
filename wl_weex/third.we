@@ -1,0 +1,105 @@
+<template>
+    <wxc-navpage data-role="none" background-color="#ffffff" height="128" title="{{shtitle}}" title-color="#051b28" left-item-src="{{leftimg}}">
+        <image src="{{loadimg}}" class="loading" style="height:300" if="shown"></image>
+        <web class="content" id="webview" src='{{thirdhref}}' onpagestart="startload" onpagefinish="finishload" onerror="failload"></web>
+    </wxc-navpage>
+</template>
+
+<style>
+    .content {
+        position: absolute; 
+        top: 0; 
+        left: 0; 
+        right: 0; 
+        bottom: 0; 
+        margin-top: 0;
+        width:750;
+    }
+</style>
+<script>
+    require('weex-components');
+    module.exports = {
+        data:{
+            hostU:'',
+            shown:true,
+            platform:'',
+            thirdhref:'',
+            shtitle:'',
+            leftimg:'',
+            loadimg:''
+        },
+        created:function(){
+            var vm = this;
+            vm.hostU = 'http://dev.ms.vipwifi.com';
+            // stream.fetch({
+            //     url: 'http://dev.ms.vipwifi.com/wl_weex/build/host.json',
+            //     type: 'json',
+            //     method: 'GET'
+            // }, function (res) {   
+            //     if(typeof res == 'string'){
+            //         res = JSON.parse(res);
+            //     }
+            //     var res_data = res.data; 
+            //     if(typeof res_data == 'string'){
+            //         res_data = JSON.parse(res_data);
+            //     }
+            //     vm.hostU = res_data.hosturl;
+                vm.leftimg = vm.hostU+'/wl_weex/images/closeweb.png';
+                vm.loadimg = vm.hostU+'/wl_weex/images/loading.gif';
+                var bundleUrl = vm.$getConfig().bundleUrl;
+                var thirdT = bundleUrl.split('shtitle=')[1];
+                var curUrl = bundleUrl.split('&href=')[1];
+                vm.$getConfig(function (config) {
+                    var env = config.env;
+                    vm.platform = env.platform.toLowerCase();
+                    if(vm.platform == 'ios'){
+                        var scale = env.scale;
+                        var deviceWidth = env.deviceWidth / scale;
+                        vm.navBarHeight = 64.0 * 750.0 / deviceWidth;
+                    }
+                }.bind(this));
+                
+                if(vm.platform == 'web'){
+                    vm.shtitle = decodeURI(thirdT.split('&href=')[0])
+                    vm.thirdhref = curUrl;
+                }else{
+                    var eventModule = require('@weex-module/event');
+                    var loginModule = require('@weex-module/login');
+                    vm.shtitle = decodeURI(decodeURI(thirdT.split('&href=')[0]))
+                    eventModule.openURL('url',function(ret) {
+                        if (ret.userid!=''){
+                            vm.thirdhref = curUrl;
+                        }else{
+                            /**
+                            *   未登陆时，跳转到登录页面，登陆完成再次回到此页面
+                            **/
+                            loginModule.openURL('http://login.js',false);
+                        }
+                    })
+                } 
+            // },function(response){
+                
+            // })
+            vm.$on('naviBar.leftItem.click',function(e){
+                vm.pop()
+            });
+        },
+        methods: {
+            pop: function() {
+                var params = {
+                    'animated' : 'true',
+                }
+                this.$call('navigator','pop',params, function () {});
+            },
+            startload:function(){
+            },
+            finishload: function(e) {
+                this.shown = false;
+            },
+            failload: function(e) {
+                
+            }
+        }  
+    } 
+
+</script>

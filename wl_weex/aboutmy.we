@@ -1,0 +1,82 @@
+<template>
+	<wxc-navpage data-role="none" background-color="#ffffff" height="128" title="关于环球漫游" title-color="#051b28" left-item-src="{{leftimg}}">
+	<scroller class="page-scroll">
+		<div class="container">
+		    <div class="logoContainer">
+		    	<image class="logo" src="{{uromimg}}"></image>
+		        <text class="desc">环球漫游</text>
+		        <text class="desctwo">让旅行更美好</text>
+		        <text class="descthree">2.3.6版</text>
+		    </div>
+        </div>
+        <div class="textContainer">
+	        <text class="text">品牌创立</text>
+	        <text class="con-two">环球漫游创立于2003年，是北京环球友邻科技有限公司旗下独立运营旅游通讯服务品牌，是目前国内最大的出入境通讯服务商。创立早期姐服务于北京首都机场T2T3航站楼的旅客，为首都机场出入境旅游团分自由行客户以及商务出差人士，提供韩国、日本、中国手机租赁、国际长途电话卡、IC卡等服务，为出入境客户量身定做经济型和商务型的通话套餐，从而节省大量的境外漫游费用，并让每一位客户享受到当地最好的网络通话质量，飞机落地后将手机开机，只需简单拨号，就能与亲人第一时间取得联系报声平安：“爸妈，我平安落地英国啦，现在去学路上，请放心！”“老婆，我平安抵达韩国仁川，有事记得打这个韩国号码喔，早点睡！”；环球漫游一直凭借着最优质、最贴心的服务，大众化的价格路线， 越来越多的出入境人士认可环球漫游品牌，客户的满意度，在异国他乡真实的感受，一点一滴积聚着品牌力量，是环球漫游继续前行的强大动力！</text>
+	<text class="text">业务范围</text>
+	        <text class="con-two">环球漫游创立于2003年，是北京环球友邻科技有限公司旗下独立运营旅游通讯服务品牌，是目前国内最大的出入境通讯服务商。创立早期姐服务于北京首都机场T2T3航站楼的旅客，为首都机场出入境旅游团分自由行客户以及商务出差人士，提供韩国、日本、中国手机租赁、国际长途电话卡、IC卡等服务，为出入境客户量身定做经济型和商务型的通话套餐，从而节省大量的境外漫游费用，并让每一位客户享受到当地最好的网络通话质量，飞机落地后将手机开机，只需简单拨号，就能与亲人第一时间取得联系报声平安：“爸妈，我平安落地英国啦，现在去学路上，请放心！”“老婆，我平安抵达韩国仁川，有事记得打这个韩国号码喔，早点睡！”；环球漫游一直凭借着最优质、最贴心的服务，大众化的价格路线， 越来越多的出入境人士认可环球漫游品牌，客户的满意度，在异国他乡真实的感受，一点一滴积聚着品牌力量，是环球漫游继续前行的强大动力！</text>
+	</div>
+	<div><>
+   </scroller>
+  </wxc-navpage>
+</template>
+<style>
+.page-scroll{position: absolute; top: 0;left: 0; right: 0;bottom: 0;font-family:微软雅黑;}
+	.logoContainer {width: 750px;height: 300px;padding-top:30;padding-bottom:30;align-items: center;justify-content: center; background-color: #fefefe;}
+    .logo{width:71px;height: 71px;}
+	.desc {margin-top: 20px;font-size: 38px;color: #666;}
+	.desctwo{margin-top: 10px;font-size:22px;color: #999;}
+	.descthree{margin-top: 20px;font-size:24px;color: #ff5a00;}
+	.textContainer {width:750;background-color: #fefefe;padding-left:34;padding-right:34;align-items: left;justify-content: left;}
+	.text{font-size:34;color:#333;margin-bottom:30;font-weight:bold;overflow:hidden;}
+    .con-two{font-size:28;color:#666;margin-bottom:30; overflow:hidden;white-space:yes;font-family:微软雅黑;align-items: center;  line-height: 40;}
+</style>
+ <script>
+	require('weex-components');
+	module.exports = {
+		data: {
+            hostU:'',
+            leftimg:'',
+            uromimg:''
+        },
+		created:function () {
+		//回退
+		    var vm = this;
+            vm.hostU = 'http://dev.ms.vipwifi.com';
+            // stream.fetch({
+            //     url: 'http://dev.ms.vipwifi.com/wl_weex/build/host.json',
+            //     type: 'json',
+            //     method: 'GET'
+            // }, function (res) {
+            //     if(typeof res == 'string'){
+            //         res = JSON.parse(res);
+            //     }
+            //     var res_data = res.data; 
+            //     if(typeof res_data == 'string'){
+            //         res_data = JSON.parse(res_data);
+            //     }
+            //     vm.hostU = res_data.hosturl;
+            //     vm.wifiU = res_data.wifiurl;
+            		vm.leftimg = vm.hostU+'/wl_weex/images/left-rowbg.png';
+            		vm.uromimg = vm.hostU+'/wl_weex/images/uroalogo.png';
+            // },function(response){
+                
+            // })
+            vm.$on('naviBar.leftItem.click',function(e){
+                vm.pop()
+            });
+		
+	},
+	 methods: {
+		pop: function() {
+	        var vm = this;
+	        var params = {
+	          'animated' : 'true'
+	        }
+	        vm.$call('navigator','pop',params, function () {});
+	},
+	gotoIndex: function(e) {
+            }
+	 }
+}
+</script>
+

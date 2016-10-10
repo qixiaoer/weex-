@@ -1,0 +1,487 @@
+<template>
+    <wxc-navpage data-role="none" background-color="#ffffff" height="128" title="{{countryinfor.name}}" title-color="#051b28" left-item-src="{{leftimg}}">
+        <scroller class="main" if="isload">
+            <container>
+                <container class="slider-container" if="{{ifbanner}}">
+                    <slider class="index_slider" interval="{{intervalValue}}" auto-play="{{isAutoPlay}}" >
+                        <div class="slider-pages" repeat="{{bannerList}}" hrefs="{{url}}" tjid="{{id}}" shtitle="{{ads_merchant_name}}" shlogo="{{ads_merchant_logo}}" onclick="push">
+                            <image class="thumb" src="{{img}}"></image>
+                        </div>
+                        <indicator class="indicator"></indicator>
+                    </slider>
+                </container>
+                <container class="category" style="border-bottom-width:{{borders}}" if="{{ifcate}}">
+                    <div class="cate" repeat="{{cate}}">
+                        <div hrefs="{{url}}" tjid="{{id}}" shtitle="{{ads_merchant_name}}" shlogo="{{ads_merchant_logo}}" onclick="push">
+                            <image class="cate_img" src="{{img}}"></image>
+                            <text class="catea">{{title}}</text>
+                        </div>
+                    </div>
+                </container>
+                <container class="dest-adsM" if="{{ifhot}}">
+                    <text class="hot-hd" onclick="alerts" style="border-bottom-width:{{borders}}" if="{{ifhotwz}}">热门活动</text>
+                    <div class="dest-ads">
+                        <div class="ads-left" style="padding-top:{{pdtop}}">
+                            <div class="bordersleft{{$index+1}}" repeat="{{addleft}}" style="border-bottom-width:{{borders}};border-right-width:{{borders}};">
+                                <image class="ads-left{{$index+1}}" src="{{img}}" tjid="{{id}}" shtitle="{{ads_merchant_name}}" hrefs="{{url}}"  shlogo="{{ads_merchant_logo}}" onclick="push"></image>
+                            </div>
+                        </div>
+                        <div class="ads-right">
+                            <div class="bordersright{{$index+1}}" repeat="{{addright}}" style="border-bottom-width:{{borders}};">
+                                <image class="ads-right{{$index+1}}" src="{{img}}" tjid="{{id}}" shtitle="{{ads_merchant_name}}" hrefs="{{url}}" shlogo="{{ads_merchant_logo}}" onclick="push"></image>
+                            </div>
+                        </div>
+                    </div>
+                </container>
+                <container>
+                    <scroller scroll-direction="horizontal" class="ads-slider" if="{{iflogo}}">
+                        <image class="ads-logo" src="{{img}}" hrefs="{{url}}" tjid="{{id}}" shtitle="{{ads_merchant_name}}" shlogo="{{ads_merchant_logo}}" onclick="push" repeat="{{logom}}"></image>
+                    </scroller>
+                </container>
+                <text class="hot-hd" style="border-bottom-width:{{borders}}" if="{{ifrecomswz}}">独家享有</text>
+            </container>
+            <container class="dest-proBox" repeat="{{recoms}}" style="border-bottom-width:{{borders}};" if="{{ifrecoms}}">
+                <image class="dest-productimg" src="{{img}}" hrefs='{{url}}' tjid="{{id}}" shtitle="{{ads_merchant_name}}" shlogo="{{ads_merchant_logo}}" onclick="push"></image>
+                <div class="dest-titpri">
+                    <div class="dest-titdiv">
+                        <text class="dest-tit" hrefs='{{url}}' tjid="{{id}}" shtitle="{{ads_merchant_name}}" shlogo="{{ads_merchant_logo}}" onclick="push">{{title}}</text>
+                    </div>
+                    <p class="dest-price" hrefs='{{url}}' tjid="{{id}}" shtitle="{{ads_merchant_name}}" shlogo="{{ads_merchant_logo}}" onclick="push">
+                        <text class="dest-pricen">￥{{pro_price}}起</text>
+                        <text class="dest-pricey">￥{{mar_price}}</text>
+                    </p>
+                </div>
+            </container>
+            <div class="outerfix" if="shown"></div>
+            <container class="thirdCon" if="shown">
+                <text class="thirdGo">即将前往</text>
+                <div class="third-logobr" style="border-bottom-width:{{borders}}">
+                    <image class="third-logo" src="{{gotoimg}}"></image>
+                </div>
+                <div class="third-btm"><text class="third-ts">现在为您跳转至{{shtitle}}</text></div>
+            </container>  
+        </scroller>
+    </wxc-navpage>
+</template>
+<style>
+    .main{background-color:#e4ecef; font-family: "微软雅黑", "Microsoft yahei";  position: absolute; top: 0;left: 0; right: 0;bottom: 0; }
+    .outerfix{ background-color: rgba(0,0,0,0.3); width:750; height:1334; position: fixed;  z-index: 999;}
+    .thirdCon{ width:690;height:502;background-color:#ffffff;border-bottom-left-radius:18px;border-bottom-right-radius:18px; border-top-left-radius:18px; border-top-right-radius:18px; z-index: 999; position: fixed; left:30; top:418;}
+    .thirdGo{ padding-top: 39;padding-bottom: 20; text-align: center;color:#333333;font-size: 28;font-family: "微软雅黑", "Microsoft yahei";}
+    .third-logo{width:117;height:62;}
+    .third-logobr{ border-style:solid; border-bottom-color:#e9e7e7;width:650; margin-left:20;align-items: center; junstify-content:center; padding-bottom:20;}
+    .third-btm{background-color:#fe4c4c; height:140; flex-direction:row; align-items: center;margin-top: 100;}
+    .third-ts{color:#ffffff;font-size: 38; flex:1; text-align: center;font-family: "微软雅黑", "Microsoft yahei"; }
+
+    .white{color:#fff;}
+   
+    .refresh-view { width: 750;flex-direction:row;}
+    .refresh-arrow { font-size: 25; color:#eee;margin-left:36px;}
+
+    .font20{font-size: 20;}
+    .slider-container{position: relative; width:750;height:370; background-color: #fff;}
+    .index_slider{width:750;height:370;background-color:#fff;margin-top: 0; z-index:5;overflow: visible;}
+    .indicator {position:absolute;width:750;height:20;left:0;bottom:10; itemSize:16;itemColor:#dddddd;itemSelectedColor:#fe4c4c; z-index:900;}
+    /*.slider-bd{position: absolute;bottom:45;left:0;width:750;height:23;z-index:888;}*/
+    .thumb{ width:750;height:330;margin-top: 0; }
+
+    .category{ padding-top:20; padding-bottom: 16; background-color:#ffffff;flex-direction:row;  border-style:solid; border-bottom-color:#dadada;width:750;flex-wrap:wrap;} 
+    .cate{ flex-wrap:wrap ; width:187.5;}
+    .cate_img{ width:88; height:88;margin-left:50;border-radius:44;overflow: hidden;}
+    .catea{ padding-top: 18;padding-bottom: 18;width:187.5; text-align: center; color:#333;font-size:24; }
+    .swiper-bg{ position:absolute;left:0; bottom:12; width:750;height:23; z-index: 999; }
+
+    .dest-adsM{ background-color: #ffffff;margin-top: 24;}
+    .dest-ads{ flex-direction:row;}
+    .hot-hd{padding-top:28;padding-bottom:28;padding-left:26; width:750; background-color: #fff; color:#181818; font-size:32; font-weight:bold;border-style:solid; border-bottom-color:#d2d2d2;}
+    .ads-left{ width:374; }
+    .ads-left1{width:373;height:376;}
+    .bordersleft1{border-style:solid; border-bottom-color:#d2d2d2; border-right-color:#d2d2d2;}
+    .ads-left2{width:373;height:189; padding-bottom: 1px;}
+    .bordersleft2{border-style:solid; border-right-color:#d2d2d2; border-bottom-color:#d2d2d2;}
+    .ads-right{ width:374;}
+    .ads-right1{width:374;height:188;}
+    .bordersright1{border-style:solid;border-bottom-color:#d2d2d2;}
+    .ads-right2{width:374;height:188;}
+    .bordersright2{border-style:solid; border-bottom-color:#d2d2d2;}
+    .ads-right3{width:374;height:188; padding-bottom: 1px;}
+    .bordersright3{border-style:solid; border-bottom-color:#d2d2d2;}
+    .ads-slider{background-color: #e4ecef;height:210;width: 750;flex-direction:row;}
+    .slidertouch{flex-direction:row;align-items: center;junstify-content:center;}
+    .ads-logo{width:264;height:130;margin-left:20;margin-top: 40; }
+    
+    .dest-proBox{border-style:solid; border-bottom-color:#dddddd; background-color:#fff;padding-top:24;padding-bottom: 24;padding-left:24;padding-right: 24;flex-direction:row;}
+    .dest-productimg{ width:240;height:160;border-bottom-left-radius:4px;border-bottom-right-radius:4px; border-top-left-radius:4px; border-top-right-radius:4px;}
+    .dest-titpri{width:436;margin-left: 26;}
+    .dest-titdiv{width:436;flex-direction:row;height:88;align-items: center;}
+    .dest-tit{font-size:32;color:#181818; flex:1;}
+    .dest-price{flex-direction:row;height:70;align-items: center;}
+    .dest-pricen{font-size:30;color:#ff5a00;}
+    .dest-pricey{font-size:24;color:#999999; margin-left:29; text-decoration: line-through;}
+
+    .ads-top{ width:450; height:143;}
+    .ads-btm{ margin-top: 1; flex-direction:row;}
+    .ads-btmimg{height:218; flex:1;}
+</style>
+
+<script>
+require('weex-components');
+var stream = require('@weex-module/stream')
+var timer = require('@weex-module/timer')
+
+    module.exports = {
+        data: {
+            hostU:'',
+            leftimg:'',
+            urls:'',
+            lks:'',
+            platform:'',
+            shown:false,  
+            ifbanner:true,
+            ifcate:true,
+            ifhot:true,
+            ifhotwz:true,
+            iflogo:true,
+            ifrecoms:true,
+            ifrecomswz:true,
+            intervalValue:"2000",
+            isAutoPlay:"true",
+            displayRefresh:false,
+            borders:"1px",
+            pdtop:'0px',
+            res_data:'',
+            countryinfor:{},
+            bannerList:[],
+            cate:[],
+            addleft:[],
+            addright:[],
+            logom:[],
+            recoms:[],
+            gotoimg:'', 
+            shtitle:'',
+            tjid:'',
+            channel_uid:'',
+            isload:true,
+            jiazai:false
+        },
+        created:function(){
+            /**
+            * 顶部返回按钮
+            */
+            var vm = this;
+            vm.hostU = 'http://dev.ms.vipwifi.com';
+            // stream.fetch({
+            //     url: 'http://dev.ms.vipwifi.com/wl_weex/build/host.json',
+            //     type: 'json',
+            //     method: 'GET'
+            // }, function (res) {   
+            //     if(typeof res == 'string'){
+            //         res = JSON.parse(res);
+            //     }
+            //     var res_data = res.data; 
+            //     if(typeof res_data == 'string'){
+            //         res_data = JSON.parse(res_data);
+            //     }
+            //     vm.hostU = res_data.hosturl;
+                vm.leftimg = vm.hostU+'/wl_weex/images/left-rowbg.png';
+                vm.$on('naviBar.leftItem.click',function(e){
+                    vm.pop()
+                });
+                vm.$getConfig(function (config) {
+                    var env = config.env;
+                    vm.platform = env.platform.toLowerCase();
+                    if(vm.platform == 'ios'){
+                        var scale = env.scale;
+                        var deviceWidth = env.deviceWidth / scale;
+                        vm.navBarHeight = 64.0 * 750.0 / deviceWidth;
+                    }
+                }.bind(this));
+                vm.urls = vm.hostU+'/wl_weex/build/third.js'
+                vm.lks = '?'
+                if(vm.platform == 'web'){
+                    vm.pdtop = '2px'
+                    vm.borders = '2px'
+                    vm.lks = '&'
+                    vm.urls = vm.hostU+'/wl_weex/build/index.html?page=third.js'
+                    stream.fetch({
+                        url: vm.hostU+'/MshopApi/User/get_online_userid',
+                        type: 'json',
+                        method: 'GET'
+                    }, function (res) {
+                        if (res.data.msg=='success'){
+                            vm.channel_uid = res.data.data.uid;
+                        }else{
+                            vm.channel_uid = '';
+                        }
+                    },function(response){
+                        vm.channel_uid = '';
+                    })
+                }
+                /**
+                * stream 动态接口数据
+                */
+                var bundleUrl = vm.$getConfig().bundleUrl;
+                var parentid = bundleUrl.split('parent_id=')[1]
+                if (parentid==undefined){
+                    parentid = '19'
+                }
+                var platapp = '';
+                if (vm.platform == 'ios' || vm.platform == 'android'){
+                    platapp = '1';
+                }else{
+                    platapp = '2';
+                }
+                stream.fetch({
+                    url: vm.hostU+'/MshopApi/Fun/country_content?mdd_country_id='+parentid+"&platform="+platapp,
+                    type: 'json',
+                    method: 'GET'
+                }, function (res) {   
+                    if(typeof res == 'string'){
+                        res = JSON.parse(res);
+                    }
+                    var res_data = res.data;
+                    if(typeof res_data === 'string'){
+                        res_data = JSON.parse(res_data);
+                    }
+                    if (res_data.msg=='success'){
+                        vm.getData(res_data)
+                    }else{
+                    }
+                },function(response){
+
+                })
+            // },function(response){
+                
+            // })
+        },
+        methods: {
+            getData:function(res_data){
+                this.res_data = res_data.data; 
+                this.countryinfor = this.res_data.country_info; 
+                if (this.res_data.banner_list==undefined){
+                    this.ifbanner = false;
+                }else{
+                    this.bannerList = this.res_data.banner_list;
+                }
+                if (this.res_data.category_list==undefined){
+                    this.ifcate = false;
+                }else{
+                    this.cate = this.res_data.category_list;
+                }
+                if (this.res_data.brand_logo_list==undefined){
+                    this.iflogo = false;
+                }else{
+                    this.logom = this.res_data.brand_logo_list;
+                }
+                if (this.res_data.recommends_list==undefined){
+                    this.ifrecoms = false;
+                    this.ifrecomswz = false;
+                }else{
+                    this.recoms = this.res_data.recommends_list;
+                }
+
+                if (this.res_data.activity_list==undefined){
+                    this.ifhot = false;
+                    this.ifhotwz = false;
+                }else{
+                    var actilen = this.res_data.activity_list.length;
+                    if (actilen >= 2){
+                        for (var i = 0;i < actilen;i++){
+                            if ( i >=2){
+                                this.addright.push(this.res_data.activity_list[i])
+                            }else{
+                                this.addleft.push(this.res_data.activity_list[i])
+                            }
+                        }
+                    }else{
+                        for (var i = 0;i < actilen;i++){
+                            this.addleft.push(this.res_data.activity_list[i])
+                        }
+                    }
+                }
+                
+            }, 
+            push: function(e) {
+                var vm = this;
+                var thirdHref = e.target.attr.hrefs.replace(/&amp;/g,'&');
+                vm.gotoimg = e.target.attr.shlogo;
+                if (e.target.attr.shlogo.indexOf('http://')==-1){
+                    vm.gotoimg = vm.hostU+e.target.attr.shlogo;
+                }
+                vm.shtitle = e.target.attr.shtitle;
+                vm.tjid = e.target.attr.tjid;
+                var ishth='?'
+                if (thirdHref.indexOf('?')>-1){
+                    ishth = '&'
+                }
+                 var thirdlink = 'shtitle='+encodeURI(vm.shtitle)+"&href="+decodeURI(thirdHref)+ishth+'channel_client=weixin&channel=uroaming&channel_uid='+vm.channel_uid;
+                /**
+                *   web微信端，默认状态已登录，直接将channel_uid 传给第三方并跳转到第三方js
+                **/
+                if(vm.platform == 'web'){
+                    // 统计user_id 和 content_id
+                    stream.fetch({
+                        url: vm.hostU+'/Adsunion/Statistics/addHits?user_id='+vm.channel_uid+"&content_id="+vm.tjid,
+                        type: 'json',
+                        method: 'GET'
+                    }, function (res) {   
+                        
+                    },function(response){
+                        
+                    })
+                    var webUrl = vm.urls+vm.lks+thirdlink;
+                    vm.shown = true;
+                    var ua = navigator.userAgent.toLowerCase(); 
+                    // 如果打开的不是第三方页面，则判断链接是否是app的链接或者web链接
+                    if (thirdHref.indexOf('wl_weex/build/')>-1){
+                        // 打开的不是第三方页面，链接是web链接
+                        if (thirdHref.indexOf('index.html?page=')>-1){
+                            
+                            if ((/iphone|ipad|ipod/).test(ua)) {
+                                var params = {
+                                    'url':thirdHref,
+                                    'animated' : 'true',
+                                }
+                                vm.$call('navigator','push',params, function () {});
+                            }else{
+                                vm.$openURL(thirdHref)
+                            }
+                        }else{
+                            // 打开的不是第三方页面，链接是app链接,要转换成web链接
+                            var gotoUrl = thirdHref.split('wl_weex/build/')[0]+'wl_weex/build/index.html?page='+thirdHref.split('wl_weex/build/')[1];
+                            if ((/iphone|ipad|ipod/).test(ua)) {
+                                var params = {
+                                    'url':gotoUrl,
+                                    'animated' : 'true',
+                                }
+                                vm.$call('navigator','push',params, function () {});
+                            }else{
+                                vm.$openURL(gotoUrl)
+                            }
+                        }
+                    }else{
+                        timer.setTimeout(function () { 
+                            vm.shown = false;
+                            if ((/iphone|ipad|ipod/).test(ua)) {
+                                var params = {
+                                    'url':webUrl,
+                                    'animated' : 'true',
+                                }
+                                vm.$call('navigator','push',params, function () {});
+                            }else{
+                                webUrl = thirdHref+ishth+'channel_client=weixin&channel=uroaming&channel_uid='+vm.channel_uid;
+                                vm.$openURL(webUrl)
+                            }
+                        }, 1000)
+                    }  
+                }else{
+                    /**
+                    *   客户端提供原生方法，获取用户channer_uid
+                    **/
+                    var eventModule = require('@weex-module/event');
+                    var loginModule = require('@weex-module/login');
+                    eventModule.openURL('url',function(ret) {
+                        if (ret.userid!=''){
+                            vm.channel_uid = ret.userid;
+                            // 统计user_id 和 content_id
+                            stream.fetch({
+                                url: vm.hostU+'/Adsunion/Statistics/addHits?user_id='+vm.channel_uid+"&content_id="+vm.tjid,
+                                type: 'json',
+                                method: 'GET'
+                            }, function (res) {  
+
+                            },function(response){
+                                
+                            })
+                            if (thirdHref.indexOf('wl_weex/build/')>-1){
+                                // 打开的不是第三方页面，链接是web链接
+                                if (thirdHref.indexOf('index.html?page=')>-1){
+                                    var gotoUrl = thirdHref.split('wl_weex/build/')[0]+'wl_weex/build/'+thirdHref.split('wl_weex/build/')[1];
+                                    var params = {
+                                        'url':gotoUrl,
+                                        'animated' : 'true',
+                                    }
+                                    if(vm.platform == 'ios'){
+                                        vm.$call('navigator','push',params, function () {});
+                                    }else{
+                                        vm.$call('navigator','push',{}, function () {});
+                                        loginModule.openURL(gotoUrl,false)
+                                    }
+                                }else{
+                                    // 打开的不是第三方页面，链接是app链接,要转换成web链接
+                                    var params = {
+                                        'url':thirdHref,
+                                        'animated' : 'true',
+                                    }
+                                   if(vm.platform == 'ios'){
+                                        vm.$call('navigator','push',params, function () {});
+                                    }else{
+                                        vm.$call('navigator','push',{}, function () {});
+                                        loginModule.openURL(thirdHref,false)
+                                    }
+                                }
+                            }else{
+                                thirdlink = 'shtitle='+encodeURI(vm.shtitle)+"&href="+decodeURI(thirdHref)+ishth+'channel_client=app&channel=uroaming&channel_uid='+vm.channel_uid;
+                                var thirdUrl = vm.urls+vm.lks+thirdlink;
+                                if (timer) {
+                                /**
+                                *   ios setTimeout必须带timer. 
+                                *   页面跳转到第三方
+                                **/
+                                    if(vm.platform == 'ios'){
+                                        vm.shown = true;
+                                        timer.setTimeout(function () { 
+                                            vm.shown = false;
+                                            var params = {
+                                                'url': thirdUrl,
+                                                'animated' : 'true',
+                                            }
+                                            vm.$call('navigator','push',params, function () {});
+                                        }, 1000)
+                                    }else{
+                                        /**
+                                        *   安卓 setTimeout必须带timer. 
+                                        *   页面跳转到第三方
+                                        **/
+                                        vm.shown = true;
+                                        setTimeout(function () { 
+                                            vm.shown =false
+                                            var params = {
+                                                'url': thirdUrl,
+                                                'animated' : 'true',
+                                            }
+                                            vm.$call('navigator','push',{}, function () {});
+                                            loginModule.openURL(thirdUrl,false)
+                                        }, 1000)
+                                    }   
+                                }else{
+                                    /**
+                                    *   无计时器时，不影响直接打开第三方
+                                    **/
+                                    vm.shown =false;
+                                    var params = {
+                                        'url': thirdUrl,
+                                        'animated' : 'true',
+                                    }
+                                    vm.$call('navigator','push',params, function () {});
+                                }
+                            }
+                        }else{
+                            /**
+                            *   未登陆时，跳转到登录页面，登陆完成再次回到此页面
+                            **/
+                            loginModule.openURL('http://login.js',false);
+                        }
+                    });
+                }               
+            },
+            pop: function() {
+                var vm = this;
+                var params = {
+                    'animated' : 'true',
+                }
+                vm.$call('navigator','pop',params, function () {});
+            }
+        }
+    }
+</script>

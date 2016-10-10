@@ -1,0 +1,50 @@
+<template>
+    <div>
+        <wxc-tabbar class="tabbar" tab-items={{tabItems}}></wxc-tabbar>
+    </div>
+</template>
+
+<script>
+    require('weex-components')
+    module.exports = {
+        data: {
+            tabItems: [
+                {
+                    index: 0,
+                    title: "目的地",
+                    titleColor: '#cdcdd4',
+                    icon: "",
+                    image: "/wl_weex/images/tab-1.jpg",
+                    selectedImage: "/wl_weex/images/tab-1on.jpg",
+                    src: "/wl_weex/build/select.js",
+                    visibility: "visible",
+                },
+                {
+                    index: 1,
+                    title: "WIFI",
+                    titleColor: '#cdcdd4',
+                    icon:"",
+                    image: "/wl_weex/images/tab-2.jpg",
+                    selectedImage: "/wl_weex/images/tab-2on.jpg",
+                    src: "/wl_weex/build/wifi.js",
+                    visibility: "hidden",
+                },
+                {
+                    index: 2,
+                    title: "我的订单",
+                    titleColor: '#cdcdd4',
+                    icon:"",
+                    image: "/wl_weex/images/tab-3.jpg",
+                    selectedImage: "/wl_weex/images/tab-3on.jpg",
+                    src: "/wl_weex/build/wifi.js",
+                    visibility: "hidden",
+                }
+            ]
+        },
+        created: function() {
+            
+        },
+        methods: {
+        }
+    }
+</script>
